@@ -325,10 +325,10 @@
 										<input type="hidden" th:field="*{certificateReason}">
 										<input type="hidden" th:field="*{certificateType}">
 
-										<input type="hidden" id="paymentStatus" th:field="*{paymentStatus}" required
+										<input type="hidden" id="paymentStatus" th:field="*{paymentStatus}"
 											value="unpaid">
 										<input type="hidden" id="paymentId" th:field="*{paymentId}" name="payment_id"
-											required value="">
+											value="">
 
 										<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -775,10 +775,13 @@
 							}
 
 							// Validate Payment
+							// Validate Payment
+							/*
 							if (!paymentId.disabled) {
 								alert("Payment is Required.");
 								return;
 							}
+							*/
 
 							// Final Confirmation
 							if (confirm("Are you sure to submit the form?")) {

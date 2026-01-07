@@ -1002,9 +1002,9 @@
 
 												<hr>
 												<input type="hidden" id="paymentStatus" th:field="*{paymentStatus}"
-													required value="unpaid">
+													value="unpaid">
 												<input type="hidden" id="paymentId" th:field="*{paymentId}"
-													name="payment_id" required value="">
+													name="payment_id" value="">
 
 												<button id="payment-button" class="btn btn-primary w-100"
 													type="button">Proceed to
@@ -1663,11 +1663,14 @@
 					}
 
 					// Validate Payment
+					// Validate Payment
+					/*
 					const paymentId = document.getElementById("payment-button");
 					if (!paymentId.disabled) {
 						alert("Payment is Required.");
 						return;
 					}
+					*/
 
 					// Confirmation and form submission
 					if (confirm("Are you sure to submit form?")) {
