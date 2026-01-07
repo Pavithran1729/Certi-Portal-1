@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.erp.admin.entity.Admission;
+import com.erp.service.PasswordService;
 import com.erp.student.entity.AcademicDetails;
 import com.erp.student.entity.PersonalDetails;
 import com.erp.student.entity.StudentAddress;
@@ -40,10 +41,25 @@ public class StudentService {
     @Autowired
     private StudentDocumentRepository studentDocumentRepository;
     
+    @Autowired
+    private PasswordService passwordService;
+    
     private static final String UPLOAD_DIR = System.getProperty("user.dir") + "/src/main/resources/static/uploads/";
 
     public Admission findByUsernameAndPassword(String username, String password) {
-        return repo.findByAdmissionIdAndPassword(username, password);
+        // Find student by admission ID only
+        Admission student = repo.findByAdmissionId(username);
+        
+        if (student == null) {
+            return null;
+        }
+        
+        // Verify password using PasswordService (supports both hashed and legacy plain text)
+        if (passwordService.verifyPassword(password, student.getPassword())) {
+            return student;
+        }
+        
+        return null;
     }
 
 //    personal details

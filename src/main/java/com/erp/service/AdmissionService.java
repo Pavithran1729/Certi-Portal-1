@@ -23,6 +23,9 @@ public class AdmissionService {
     @Autowired
     private AdmissionRepo admissionRepository;
 
+    @Autowired
+    private PasswordService passwordService;
+
     public boolean checkAdmissionByAadhar(String aadharNumber) {
         return admissionRepository.existsByAadharNo(aadharNumber);
     }
@@ -36,21 +39,22 @@ public class AdmissionService {
         String generatedId = generateAdmissionId(newAdmissionId);
         admission.setAdmissionId(generatedId);
 
-        // Generate a temporary password
-        String tempPassword = admission.getPassword(); // Implement this method
+        // Get the plain text password for email
+        String plainPassword = admission.getPassword();
 
-        // Set the password (Consider encrypting it before saving)
-        admission.setPassword(tempPassword);
+        // Hash the password before saving to database
+        String hashedPassword = passwordService.hashPassword(plainPassword);
+        admission.setPassword(hashedPassword);
 
-        // Send an email to the user
+        // Send an email to the user with plain text password
         try {
-            sendHtmlEmail(admission.getEmail(), generatedId, tempPassword, admission.getFirstName());
+            sendHtmlEmail(admission.getEmail(), generatedId, plainPassword, admission.getFirstName());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to send confirmation email.");
             e.printStackTrace();
         }
 
-        // Save admission
+        // Save admission with hashed password
         return admissionRepository.save(admission);
     }
 

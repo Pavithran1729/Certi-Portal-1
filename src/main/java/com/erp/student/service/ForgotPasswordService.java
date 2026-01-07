@@ -11,18 +11,22 @@ import org.springframework.stereotype.Service;
 
 import com.erp.admin.entity.Admission;
 import com.erp.repo.AdmissionRepo;
+import com.erp.service.PasswordService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class ForgotPasswordService {
-	
-	@Autowired
+
+    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
     private AdmissionRepo admissionRepository;
+
+    @Autowired
+    private PasswordService passwordService;
 
     // Store OTPs temporarily (should use Redis or a DB in production)
     private final ConcurrentHashMap<String, String> otpStore = new ConcurrentHashMap<>();
@@ -34,16 +38,16 @@ public class ForgotPasswordService {
             String otp = String.format("%06d", new Random().nextInt(999999)); // Generate 6-digit OTP
             otpStore.put(email, otp);
 
-            Admission student=admission.get();
+            Admission student = admission.get();
             // Simulate sending OTP via email (Replace with actual email logic)
-//            System.out.println("OTP for " + email + ": " + otp);
-            
-         // Send an email to the user
+            // System.out.println("OTP for " + email + ": " + otp);
+
+            // Send an email to the user
             try {
-                sendOtpEmail(student.getEmail(),student.getFirstName(),otp);
+                sendOtpEmail(student.getEmail(), student.getFirstName(), otp);
             } catch (Exception e) {
-//            	e.printStackTrace();
-            	return "Internal Server Error";
+                // e.printStackTrace();
+                return "Internal Server Error";
             }
 
             return "OTP sent to your registered email.";
@@ -51,7 +55,7 @@ public class ForgotPasswordService {
             return "Email not found!";
         }
     }
-    
+
     public void sendOtpEmail(String to, String firstName, String otp) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -73,6 +77,7 @@ public class ForgotPasswordService {
 
         mailSender.send(message);
     }
+
     public boolean validateOTP(String email, String otp) {
         return otpStore.containsKey(email) && otpStore.get(email).equals(otp);
     }
@@ -82,7 +87,9 @@ public class ForgotPasswordService {
 
         if (admission.isPresent()) {
             Admission student = admission.get();
-            student.setPassword(newPassword); // Update password (consider hashing)
+            // Hash the new password before saving
+            String hashedPassword = passwordService.hashPassword(newPassword);
+            student.setPassword(hashedPassword);
             admissionRepository.save(student);
 
             otpStore.remove(email); // Clear OTP after successful reset
