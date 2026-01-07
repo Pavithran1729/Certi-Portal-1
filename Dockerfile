@@ -4,6 +4,7 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 # Resolve dependencies first for caching
+RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
 COPY src ./src
 # Build the application (skipping tests for speed in CI/CD)
