@@ -59,10 +59,11 @@ public class AdmissionService {
         return currentYear + String.format("%04d", admissionId); // Format: "202500001"
     }
 
-    private void sendHtmlEmail(String to, String generatedId, String tempPassword, String firstName) throws MessagingException {
+    private void sendHtmlEmail(String to, String generatedId, String tempPassword, String firstName)
+            throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-    
+
         String subject = "Admission Confirmation - Your Credentials";
         String body = "<html><body>" +
                 "<h3>Dear " + firstName + ",</h3>" +
@@ -72,19 +73,18 @@ public class AdmissionService {
                 "<b>Password: " + tempPassword + "</b></p>" +
                 "<p>Please use the above credentials to login.</p>" +
                 "<p>If you have any questions, feel free to contact us.</p>" +
-                "<p>Best regards,<br>Fergusson College Pune 411004.</p>" +
+                "<p>Best regards,<br>St. Peter's College of Engineering and Technology</p>" +
                 "<hr>" +
                 "<p><b>Office Contact No.:</b> 020-67656000<br>" +
-                "<b>E-mail Id:</b> <a href='mailto:principal@fergusson.edu'>principal@fergusson.edu</a></p>" +
+                "<b>E-mail Id:</b> <a href='mailto:principal@stpeters.edu'>principal@stpeters.edu</a></p>" +
                 "</body></html>";
-    
+
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(body, true); // true enables HTML
-    
+
         mailSender.send(message);
     }
-    
 
     public List<Admission> getAllStudents() {
         return admissionRepository.findAll();

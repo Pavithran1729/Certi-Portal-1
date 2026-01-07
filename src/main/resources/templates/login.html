@@ -11,18 +11,17 @@
 <body>
 	<header class="college-header">
 		<div class="logo">
-			<img src="public/fc.jpeg" alt="Fergusson College Logo">
+			<img src="public/spcet_logo.png" alt="St. Peter's College of Engineering and Technology Logo">
 		</div>
 		<div class="header-content">
-			<h2>Deccan Education Society's</h2>
-			<h1>FERGUSSON COLLEGE</h1>
-			<h3>(AUTONOMOUS)</h3>
-			<p>PUNE - 411004, MAHARASHTRA, INDIA.</p>
-			<p><strong>UGC Special Heritage Status | UGC - College of Excellence (CE) | Reaccredited with "A++" Grade by
-					NAAC (4th Cycle)</strong></p>
+			<!-- <h2>Deccan Education Society's</h2> -->
+			<h1>ST. PETER'S COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+			<h3>(Affiliated to Anna University, Chennai)</h3>
+			<p>Avadi, Chennai, Tamil Nadu 600054, INDIA.</p>
+			<p><strong>Approved by AICTE | Accredited by NAAC with 'A' Grade</strong></p>
 		</div>
 		<div class="college-image">
-			<img src="public/banner-main-1595569301.jpg" alt="Fergusson College Building">
+			<img src="public/college_building.png" alt="College Building">
 		</div>
 	</header>
 
@@ -277,8 +276,8 @@
 
 					let response = await fetch("/forgot-password/generate-otp", {
 						method: "POST",
-						headers: {"Content-Type": "application/json"},
-						body: JSON.stringify({email: email})
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ email: email })
 					});
 
 					let data = await response.text();
@@ -311,8 +310,8 @@
 				try {
 					let response = await fetch("/forgot-password/validate-otp", {
 						method: "POST",
-						headers: {"Content-Type": "application/json"},
-						body: JSON.stringify({email: email, otp: otp})
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ email: email, otp: otp })
 					});
 
 					if (response.ok) {
@@ -355,8 +354,8 @@
 				try {
 					let response = await fetch("/forgot-password/change-password", {
 						method: "POST",
-						headers: {"Content-Type": "application/json"},
-						body: JSON.stringify({email: email, newPassword: newPassword})
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ email: email, newPassword: newPassword })
 					});
 
 					let data = await response.text();
@@ -373,7 +372,7 @@
 			}
 
 			//alert("Password must contain at least 8 characters.\n1 uppercase letter. \n1 lowercase letter. \n1 digit. \n1 special symbol.");
-								
+
 		</script>
 
 		<style>
@@ -654,8 +653,8 @@
 
 
 	<footer>
-		<p>&copy; 2025 Fergusson College. All rights reserved.</p><BR>
-		<p>Contact us: <a href="mailto:info@fergusson.edu.in">info@fergusson.edu.in</a></p>
+		<p>&copy; 2025 St. Peter's College of Engineering and Technology. All rights reserved.</p><BR>
+		<p>Contact us: <a href="mailto:info@spcet.ac.in">info@spcet.ac.in</a></p>
 	</footer>
 
 

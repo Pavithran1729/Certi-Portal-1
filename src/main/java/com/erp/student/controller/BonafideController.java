@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +24,8 @@ import com.erp.student.repo.BonafideRepository;
 @RequestMapping("/student")
 public class BonafideController {
 
+    private static final Logger log = LoggerFactory.getLogger(BonafideController.class);
+
     @Autowired
     private BonafideRepository bonafideRepository;
 
@@ -29,23 +33,23 @@ public class BonafideController {
 
     @PostMapping("/save_bonafide")
     public String saveBonafide(@ModelAttribute BonafideEntity bonafide,
-                               @RequestParam("identityProofFile") MultipartFile identityProof,
-                               @RequestParam("latestMarksheetFile") MultipartFile birthProof,
-                               @RequestParam("proofOfAdmissionFile") MultipartFile feeReceipt,
-                               RedirectAttributes redirectAttributes) {
+            @RequestParam("identityProofFile") MultipartFile identityProof,
+            @RequestParam("latestMarksheetFile") MultipartFile birthProof,
+            @RequestParam("proofOfAdmissionFile") MultipartFile feeReceipt,
+            RedirectAttributes redirectAttributes) {
         try {
             // Save files and set file names in entity
             bonafide.setIdentityProofPath(saveFile(identityProof));
             bonafide.setBirthProofPath(saveFile(birthProof));
             bonafide.setFeeReceiptPath(saveFile(feeReceipt));
 
-//            System.out.println("Identity Proof Path: " + bonafide.getIdentityProofPath());
-//            System.out.println("Birth Proof Path: " + bonafide.getBirthProofPath());
-//            System.out.println("Fee Receipt Path: " + bonafide.getFeeReceiptPath());
-//            // Save Bonafide Application to DB
+            // System.out.println("Identity Proof Path: " +
+            // bonafide.getIdentityProofPath());
+            // System.out.println("Birth Proof Path: " + bonafide.getBirthProofPath());
+            // System.out.println("Fee Receipt Path: " + bonafide.getFeeReceiptPath());
+            // // Save Bonafide Application to DB
             bonafideRepository.save(bonafide);
 
-            
             redirectAttributes.addFlashAttribute("successMessage", "Bonafide application submitted successfully!");
             return "redirect:/student/request_certificate";
         } catch (Exception e) {
@@ -65,10 +69,9 @@ public class BonafideController {
             Files.write(filePath, file.getBytes());
             return fileName;
         } else {
-            System.out.println("File is null or empty!");
+            log.warn("File is null or empty!");
         }
         return null;
     }
-
 
 }

@@ -329,7 +329,7 @@
 <body>
 	<!-- Preloader -->
 	<div class="preloader">
-		<img th:src="@{/public/logo.png}" style="width:200px;" alt="loader" class="lds-ripple img-fluid" />
+		<img th:src="@{/public/spcet_logo.png}" style="width:200px;" alt="loader" class="lds-ripple img-fluid" />
 	</div>
 	<div id="main-wrapper">
 		<!-- Sidebar Start -->
@@ -352,13 +352,14 @@
 
 
 						<div class="card-body">
-							
+
 						</div>
 						<div class="main" style="background: #fff;">
 							<!-- Header Section -->
 							<div class="header-top">
-								<!-- <img class="header-img" th:src="@{/public/h1.png}" alt="Fergusson College Document"> -->
-								<img class="header-img" th:src="@{/public/h1.png}" alt="FC">
+								<!-- <img class="header-img" th:src="@{/public/h1.png}" alt=""> -->
+								<img class="header-img" th:src="@{/public/spcet_logo.png}"
+									alt="St. Peter's College of Engineering and Technology">
 							</div>
 
 							<!-- Certificate Number -->
@@ -370,16 +371,16 @@
 							<div class="bonafide-certificate">
 								<div class="st-profile">
 									<div class="st-profile-photo">
-									
+
 										<th:block th:if="${document != null}">
-										    <img class="w-100 h-100" th:src="@{'/uploads/' + ${document.photo}}">
+											<img class="w-100 h-100" th:src="@{'/uploads/' + ${document.photo}}">
 										</th:block>
 										<th:block th:if="${document == null}">
-										    <img>
+											<img>
 										</th:block>
 
-	
-									
+
+
 									</div>
 								</div>
 
@@ -395,7 +396,8 @@
 										is a student of our college.
 										<span th:text="*{bonafide.gender == 'Male' ? 'He' : 'She'}"></span> is studying
 										in
-										<span class="bold" th:text="${#strings.toUpperCase(bonafide.course)}"></span> in the current
+										<span class="bold" th:text="${#strings.toUpperCase(bonafide.course)}"></span> in
+										the current
 										academic year <span class="bold" th:text="*{bonafide.year}"></span>. <span
 											th:text="*{bonafide.gender == 'Male' ? 'His' : 'Her'}"></span> Roll Number
 										is
@@ -410,18 +412,19 @@
 											<span class="bold" th:text="*{bonafide.dob}" id="formattedDob"></span>
 
 											<script>
-											    document.addEventListener("DOMContentLoaded", function () {
-											        let dobElement = document.getElementById("formattedDob");
-											        let dobString = dobElement.innerText; // Get raw date string
-											        if (dobString) {
-											            let dateParts = dobString.split("-"); // Assuming yyyy-MM-dd format
-											            if (dateParts.length === 3) {
-											                dobElement.innerText = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to dd-MM-yyyy
-											            }
-											        }
-											    });
+												document.addEventListener("DOMContentLoaded", function () {
+													let dobElement = document.getElementById("formattedDob");
+													let dobString = dobElement.innerText; // Get raw date string
+													if (dobString) {
+														let dateParts = dobString.split("-"); // Assuming yyyy-MM-dd format
+														if (dateParts.length === 3) {
+															dobElement.innerText = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`; // Convert to dd-MM-yyyy
+														}
+													}
+												});
 											</script>
-											 &nbsp;and <span th:text="*{bonafide.gender == 'Male' ? 'his' : 'her'}"></span>
+											&nbsp;and <span
+												th:text="*{bonafide.gender == 'Male' ? 'his' : 'her'}"></span>
 											&nbsp;date of &nbsp;birth
 											&nbsp;words is
 											<span class="bold" th:text="*{bonafide.dobInWords}"></span>.
@@ -432,16 +435,17 @@
 									<br />
 
 									<p class="asper">As per our record <span
-										th:text="*{bonafide.gender == 'Male' ? 'his' : 'her'}"></span> address :</p><br>
+											th:text="*{bonafide.gender == 'Male' ? 'his' : 'her'}"></span> address :</p>
+									<br>
 
 									<div class="st-address">
 										<p><span class="bold">Permanent Address :</span></p>
 										<p th:text="${#strings.toUpperCase(bonafide.permanentAddress)}">
-											
+
 										</p>
 										<p><span class="bold">Local Address :</span></p>
 										<p th:text="${#strings.toUpperCase(bonafide.localAddress)}">
-											
+
 										</p>
 									</div>
 
@@ -451,7 +455,9 @@
 									</p>
 
 									<div class="signature">
-										<div class="date">Date: <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></div>
+										<div class="date">Date: <span
+												th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span>
+										</div>
 										<p>Authorized Signature</p>
 									</div>
 								</div>
@@ -468,9 +474,9 @@
 								<span>Print Certificate</span>
 							</button>
 							<button type="button" onclick="goBack()">
-																							<i class="fas fa-arrow-left"></i>
-																							<span>Back</span>
-																						</button>
+								<i class="fas fa-arrow-left"></i>
+								<span>Back</span>
+							</button>
 
 						</div>
 
@@ -484,8 +490,8 @@
 							}
 
 							function goBack() {
-																				window.history.back();
-																			}
+								window.history.back();
+							}
 						</script>
 
 					</div>

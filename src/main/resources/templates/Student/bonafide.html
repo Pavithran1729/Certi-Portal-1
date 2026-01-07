@@ -42,7 +42,7 @@
 <body>
 	<!-- Preloader -->
 	<div class="preloader">
-		<img th:src="@{/public/logo.png}" style="width:200px;" alt="loader" class="lds-ripple img-fluid" />
+		<img th:src="@{/public/spcet_logo.png}" style="width:200px;" alt="loader" class="lds-ripple img-fluid" />
 	</div>
 	<div id="main-wrapper">
 		<!-- Sidebar Start -->
@@ -346,10 +346,10 @@
 
 													// Create Razorpay options
 													var options = {
-														"key": "rzp_test_AWbCxX14mGjWaN", // Replace with your Razorpay key
+														"key": "[[${razorpayKey}]]", // Injected from Controller
 														"amount": Number(totalAmount) * 100, // Convert to paisa
 														"currency": "INR",
-														"name": "FC College Pune",
+														"name": "St. Peter's College of Engineering and Technology",
 														"description": "Payment for certificate",
 														"handler": function (response) {
 															// Assign transaction ID to hidden input field
@@ -450,24 +450,24 @@
 							}
 
 							const fields = [
-								{id: "fullName", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "rollNumber", pattern: /^\d+$/, required: true},
-								{id: "course", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "yearRangeSelect", pattern: null, required: true},
-								{id: "department", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "gender", pattern: null, required: true},
-								{id: "division", pattern: null, required: true},
-								{id: "dob", pattern: null, required: true},
-								{id: "dobWords", pattern: /^[A-Z\s]+$/, required: true},
-								{id: "purposeOfCertificate", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true},
-								{id: "localAddress", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true},
-								{id: "permanentAddress", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true},
-								{id: "identityProof", pattern: null, required: true},
-								{id: "latestMarksheet", pattern: null, required: true},
-								{id: "proofOfAdmission", pattern: null, required: true}
+								{ id: "fullName", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "rollNumber", pattern: /^\d+$/, required: true },
+								{ id: "course", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "yearRangeSelect", pattern: null, required: true },
+								{ id: "department", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "gender", pattern: null, required: true },
+								{ id: "division", pattern: null, required: true },
+								{ id: "dob", pattern: null, required: true },
+								{ id: "dobWords", pattern: /^[A-Z\s]+$/, required: true },
+								{ id: "purposeOfCertificate", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true },
+								{ id: "localAddress", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true },
+								{ id: "permanentAddress", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true },
+								{ id: "identityProof", pattern: null, required: true },
+								{ id: "latestMarksheet", pattern: null, required: true },
+								{ id: "proofOfAdmission", pattern: null, required: true }
 							];
 
-							fields.forEach(({id, pattern, required}) => {
+							fields.forEach(({ id, pattern, required }) => {
 								const field = document.getElementById(id);
 								if (!field) return;
 
@@ -507,7 +507,7 @@
 
 								let formIsValid = true;
 
-								fields.forEach(({id, pattern, required}) => {
+								fields.forEach(({ id, pattern, required }) => {
 									const field = document.getElementById(id);
 									if (field) {
 										formIsValid = formIsValid && validateField(field, pattern, required);

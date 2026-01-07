@@ -1,4 +1,76 @@
+/* Preloader Removal */
+.preloader {
+    display: none !important;
+}
 
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY3VzdG9tLmNzcyIsInNvdXJjZXMiOlsiY3VzdG9tLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9 */
+/* Branding: St. Peter's College Blue (#0b0e47) */
 
-/*# sourceMappingURL=custom.css.map */
+/* Override Red Theme Elements */
+
+/* Text Colors */
+.text-primary, 
+.text-danger,
+.section-title,
+.section-header h1,
+h1, h2, h3, h4, h5, h6 {
+    color: #0b0e47 !important;
+}
+
+/* Backgrounds */
+.bg-primary, 
+.bg-danger {
+    background-color: #0b0e47 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #0b0e47 !important;
+    border-color: #0b0e47 !important;
+    box-shadow: 0 2px 6px #acb5f6 !important; /* Adjusted shadow */
+}
+
+.btn-primary:active,
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #060829 !important; /* Darker shade */
+    border-color: #060829 !important;
+}
+
+/* In this theme, it seems 'danger' red was used as a primary accent. 
+   We will override it for main UI elements, but be careful with actual delete buttons. 
+   Based on the screenshot, the 'Submit Form' was red, suggesting it might use a danger class or just the theme color.
+*/
+
+.btn-danger {
+    background-color: #0b0e47 !important;
+    border-color: #0b0e47 !important;
+}
+
+.btn-danger:hover {
+    background-color: #060829 !important;
+    border-color: #060829 !important;
+}
+
+/* Sidebar / Navigation */
+.main-sidebar .sidebar-menu li.active a {
+    color: #0b0e47 !important;
+}
+
+.main-sidebar .sidebar-menu li.active a:before {
+    background-color: #0b0e47 !important;
+}
+
+/* Form Controls */
+.form-control:focus {
+    border-color: #0b0e47 !important;
+    box-shadow: none !important;
+}
+
+/* Cards & Headers */
+.card .card-header h4 {
+    color: #0b0e47 !important;
+}
+
+/* Custom Overrides for specific red used in the template */
+/* Detected: #ea5455 */
+/* We can try to target specific elements if generic classes aren't enough */

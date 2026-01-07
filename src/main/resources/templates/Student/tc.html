@@ -35,7 +35,7 @@
 <body class="link-sidebar">
 	<!-- Preloader -->
 	<div class="preloader">
-		<img th:src="@{/public/logo.png}" style="width:200px;" alt="loader" class="lds-ripple img-fluid" />
+		<img th:src="@{/public/spcet_logo.png}" style="width:200px;" alt="loader" class="lds-ripple img-fluid" />
 	</div>
 	<div id="main-wrapper">
 		<!-- Sidebar Start -->
@@ -1029,10 +1029,10 @@
 
 															// Create Razorpay options
 															var options = {
-																"key": "rzp_test_AWbCxX14mGjWaN", // Replace with your Razorpay key
+																"key": "[[${razorpayKey}]]", // Injected from Controller
 																"amount": Number(totalAmount) * 100, // Convert to paisa
 																"currency": "INR",
-																"name": "FC College Pune",
+																"name": "St. Peter's College of Engineering and Technology",
 																"description": "Payment for certificate",
 																"handler": function (response) {
 																	// Assign transaction ID to hidden input field
@@ -1162,36 +1162,36 @@
 							}
 
 							const fields = [
-								{id: "applicationType", pattern: null, required: true},
-								{id: "validationCustom01", pattern: /^[a-zA-Z]+(?:\s[a-zA-Z]+)?$/, required: true},
-								{id: "validationCustom02", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "validationCustom03", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "contactNo", pattern: /^\d{10}$/, required: true},
-								{id: "alternateNo", pattern: /^\d{10}$/, required: true},
-								{id: "dob", pattern: null, required: true},
-								{id: "dobInWords", pattern: /^[A-Z\s]+$/, required: true},
-								{id: "validationCustom04", pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, required: true},
-								{id: "gender", pattern: null, required: true},
-								{id: "casteCategory", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "Address", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true},
-								{id: "department", pattern: null, required: true},
-								{id: "course", pattern: null, required: true},
-								{id: "newCourse", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "college_name", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "university_name", pattern: /^[a-zA-Z\s]+$/, required: true},
-								{id: "admissionType", pattern: null, required: true},
-								{id: "accountApproval", pattern: null, required: false},
-								{id: "libraryApproval", pattern: null, required: false},
-								{id: "scholarshipApproval", pattern: null, required: false},
-								{id: "identityProof", pattern: null, required: true},
-								{id: "latestMarksheet", pattern: null, required: true},
-								{id: "proofOfAdmission", pattern: null, required: true},
-								{id: "birthDateProof", pattern: null, required: true},
-								{id: "passingCertificate", pattern: null, required: true},
+								{ id: "applicationType", pattern: null, required: true },
+								{ id: "validationCustom01", pattern: /^[a-zA-Z]+(?:\s[a-zA-Z]+)?$/, required: true },
+								{ id: "validationCustom02", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "validationCustom03", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "contactNo", pattern: /^\d{10}$/, required: true },
+								{ id: "alternateNo", pattern: /^\d{10}$/, required: true },
+								{ id: "dob", pattern: null, required: true },
+								{ id: "dobInWords", pattern: /^[A-Z\s]+$/, required: true },
+								{ id: "validationCustom04", pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, required: true },
+								{ id: "gender", pattern: null, required: true },
+								{ id: "casteCategory", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "Address", pattern: /^[a-zA-Z0-9\s,.-]+$/, required: true },
+								{ id: "department", pattern: null, required: true },
+								{ id: "course", pattern: null, required: true },
+								{ id: "newCourse", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "college_name", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "university_name", pattern: /^[a-zA-Z\s]+$/, required: true },
+								{ id: "admissionType", pattern: null, required: true },
+								{ id: "accountApproval", pattern: null, required: false },
+								{ id: "libraryApproval", pattern: null, required: false },
+								{ id: "scholarshipApproval", pattern: null, required: false },
+								{ id: "identityProof", pattern: null, required: true },
+								{ id: "latestMarksheet", pattern: null, required: true },
+								{ id: "proofOfAdmission", pattern: null, required: true },
+								{ id: "birthDateProof", pattern: null, required: true },
+								{ id: "passingCertificate", pattern: null, required: true },
 
 							];
 
-							fields.forEach(({id, pattern, required}) => {
+							fields.forEach(({ id, pattern, required }) => {
 								const field = document.getElementById(id);
 								if (!field) return;
 
@@ -1324,7 +1324,7 @@
 								let formIsValid = true;
 
 
-								fields.forEach(({id, pattern, required}) => {
+								fields.forEach(({ id, pattern, required }) => {
 									const field = document.getElementById(id);
 									if (field) {
 										formIsValid = formIsValid && validateField(field, pattern, required);
@@ -1639,40 +1639,40 @@
 	
 				*/
 				function swal() {
-				    const requiredFields = document.querySelectorAll('#abra input:not([type="hidden"]):not(.disabled-look)[required], textarea[required], select[required]');
-				    let isValid = true;
+					const requiredFields = document.querySelectorAll('#abra input:not([type="hidden"]):not(.disabled-look)[required], textarea[required], select[required]');
+					let isValid = true;
 
-				    requiredFields.forEach(field => {
-				        if (!field.value.trim()) {
-				            isValid = false;
-				            field.classList.add('is-invalid');
-				            field.classList.remove('is-valid');
-				        } else {
-				            field.classList.remove('is-invalid');
+					requiredFields.forEach(field => {
+						if (!field.value.trim()) {
+							isValid = false;
+							field.classList.add('is-invalid');
+							field.classList.remove('is-valid');
+						} else {
+							field.classList.remove('is-invalid');
 
-				            // Avoid adding 'is-valid' for fields inside tbody
-				            if (!field.closest('tbody')) {
-				                field.classList.add('is-valid');
-				            }
-				        }
-				    });
+							// Avoid adding 'is-valid' for fields inside tbody
+							if (!field.closest('tbody')) {
+								field.classList.add('is-valid');
+							}
+						}
+					});
 
-				    if (!isValid) {
-				        alert("Please fill in all required fields.");
-				        return; // Stop form submission
-				    }
+					if (!isValid) {
+						alert("Please fill in all required fields.");
+						return; // Stop form submission
+					}
 
-				    // Validate Payment
-				    const paymentId = document.getElementById("payment-button");
-				    if (!paymentId.disabled) {
-				        alert("Payment is Required.");
-				        return;
-				    }
+					// Validate Payment
+					const paymentId = document.getElementById("payment-button");
+					if (!paymentId.disabled) {
+						alert("Payment is Required.");
+						return;
+					}
 
-				    // Confirmation and form submission
-				    if (confirm("Are you sure to submit form?")) {
-				        document.getElementById("abra").submit();
-				    }
+					// Confirmation and form submission
+					if (confirm("Are you sure to submit form?")) {
+						document.getElementById("abra").submit();
+					}
 				}
 
 			</script>

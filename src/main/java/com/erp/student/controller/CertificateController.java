@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.erp.admin.entity.Admission;
 import com.erp.student.entity.AcademicDetails;
@@ -45,12 +46,15 @@ public class CertificateController {
 
 	@Autowired
 	private TCRepository tcRepository;
-	
-	@Autowired 
+
+	@Autowired
 	private BonafideRepository bonafideRepository;
-	
-	@Autowired 
+
+	@Autowired
 	private AttendanceEntityRepo attendanceEntityRepo;
+
+	@Value("${razorpay.key.id}")
+	private String razorpayKey;
 
 	@GetMapping("/request_certificate")
 	public String openCertificatePage(HttpSession session, Model model) {
@@ -70,8 +74,7 @@ public class CertificateController {
 	public String CheckCertificate(HttpServletRequest request, HttpSession httpSession, Model model,
 			@RequestParam("certificate_type") String certficateType,
 			@RequestParam("certificate_reason") String certificateReason,
-			RedirectAttributes redirectAttributes
-			) {
+			RedirectAttributes redirectAttributes) {
 
 		Admission admission = (Admission) httpSession.getAttribute("student");
 
@@ -96,12 +99,12 @@ public class CertificateController {
 
 			PersonalDetails personalDetails1 = null;
 			StudentAddress studentAddress1 = null;
-			AcademicDetails academicDetails2=null;
+			AcademicDetails academicDetails2 = null;
 
 			if (personalDetail.isPresent() && academicDetails.isPresent() && studentAddress.isPresent()) {
 				personalDetails1 = personalDetail.get();
 				studentAddress1 = studentAddress.get();
-				academicDetails2=academicDetails.get();
+				academicDetails2 = academicDetails.get();
 				tcEntity.setAddress(studentAddress1.getPermanentAddress());
 				tcEntity.setContactNo(personalDetails1.getMobile());
 
@@ -111,12 +114,10 @@ public class CertificateController {
 				tcEntity.setDepartment(academicDetails2.getDepartment());
 				tcEntity.setCourse(academicDetails2.getCourse());
 
+			} else {
+				redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
+				return "redirect:/student/request_certificate";
 			}
-			else {
-			    redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
-			    return "redirect:/student/request_certificate";
-			}
-
 
 			tcEntity.setStudentId(studentId);
 
@@ -133,6 +134,7 @@ public class CertificateController {
 			tcEntity.setTotalFee(150.00);
 
 			model.addAttribute("tc", tcEntity);
+			model.addAttribute("razorpayKey", razorpayKey);
 			return "Student/tc";
 		} else if (certficateType.equals("Migration Certificate")) {
 			TCEntity tcEntity = new TCEntity();
@@ -156,12 +158,10 @@ public class CertificateController {
 				tcEntity.setCasteCategory(personalDetails1.getCaste());
 				tcEntity.setDob(personalDetails1.getDob());
 
+			} else {
+				redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
+				return "redirect:/student/request_certificate";
 			}
-			else {
-			    redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
-			    return "redirect:/student/request_certificate";
-			}
-
 
 			tcEntity.setStudentId(studentId);
 
@@ -178,31 +178,32 @@ public class CertificateController {
 			tcEntity.setTotalFee(250.00);
 
 			model.addAttribute("tc", tcEntity);
+			model.addAttribute("razorpayKey", razorpayKey);
 			return "Student/tc";
 		} else if (certficateType.equals("Bonafide Certificate")) {
-			
+
 			Optional<PersonalDetails> personalDetail = personalDetailRepository.findByStudentId(studentId);
 			Optional<AcademicDetails> academicDetails = academicDetailsRepo.findByStudentId(studentId);
 			Optional<StudentAddress> studentAddress = addressRepo.findByStudentId(studentId);
 
 			PersonalDetails personalDetails1 = null;
 			StudentAddress studentAddress1 = null;
-			AcademicDetails academicDetails1=null;
-			
+			AcademicDetails academicDetails1 = null;
+
 			BonafideEntity bonafide = new BonafideEntity();
 
 			bonafide.setCertificateReason(certificateReason);
 			bonafide.setCertificateType(certficateType);
 			bonafide.setStudentId(studentId);
-			bonafide.setFullName(admission.getLastName()+ " "+admission.getFirstName()+" "+admission.getMiddleName());
+			bonafide.setFullName(
+					admission.getLastName() + " " + admission.getFirstName() + " " + admission.getMiddleName());
 			bonafide.setTotalFees(50.00);
-			
-			
+
 			if (personalDetail.isPresent() && academicDetails.isPresent() && studentAddress.isPresent()) {
 				personalDetails1 = personalDetail.get();
 				studentAddress1 = studentAddress.get();
-				academicDetails1=academicDetails.get();
-				
+				academicDetails1 = academicDetails.get();
+
 				bonafide.setDivision(academicDetails1.getSection());
 				bonafide.setAdminApproval(0);
 				bonafide.setApplicationDate(new Date());
@@ -213,51 +214,47 @@ public class CertificateController {
 				bonafide.setPermanentAddress(studentAddress1.getPermanentAddress());
 				bonafide.setDob(personalDetails1.getDob());
 			}
-			
+
 			else {
-			    redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
-			    return "redirect:/student/request_certificate";
+				redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
+				return "redirect:/student/request_certificate";
 			}
 
-			
 			model.addAttribute("bonafide", bonafide);
+			model.addAttribute("razorpayKey", razorpayKey);
 			return "Student/bonafide";
 		} else {
-			
-			AttendanceEntity attendanceEntity=new AttendanceEntity();
-			
+
+			AttendanceEntity attendanceEntity = new AttendanceEntity();
+
 			Optional<PersonalDetails> personalDetail = personalDetailRepository.findByStudentId(studentId);
 			Optional<AcademicDetails> academicDetails = academicDetailsRepo.findByStudentId(studentId);
-			
-			
+
 			PersonalDetails personalDetails1 = null;
-			AcademicDetails academicDetails1=null;
-			
+			AcademicDetails academicDetails1 = null;
+
 			attendanceEntity.setCertificateReason(certificateReason);
 			attendanceEntity.setCertificateType(certficateType);
 			attendanceEntity.setStudentId(studentId);
-			attendanceEntity.setFullName(admission.getLastName()+ " "+admission.getFirstName()+" "+admission.getMiddleName());
-			
-			
-			if(personalDetail.isPresent())
-			{
-				personalDetails1=personalDetail.get();
-				academicDetails1=academicDetails.get();
+			attendanceEntity.setFullName(
+					admission.getLastName() + " " + admission.getFirstName() + " " + admission.getMiddleName());
+
+			if (personalDetail.isPresent()) {
+				personalDetails1 = personalDetail.get();
+				academicDetails1 = academicDetails.get();
 				attendanceEntity.setDivision(academicDetails1.getSection());
 				attendanceEntity.setAdminApproval(0);
 				attendanceEntity.setApplicationDate(new Date());
 				attendanceEntity.setGender(personalDetails1.getGender());
 				attendanceEntity.setCourse(academicDetails1.getCourse());
 				attendanceEntity.setDepartment(academicDetails1.getDepartment());
-			}
-			else {
-			    redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
-			    return "redirect:/student/request_certificate";
+			} else {
+				redirectAttributes.addFlashAttribute("error", "Please Fill Personal Details");
+				return "redirect:/student/request_certificate";
 			}
 
-			
-			model.addAttribute("attendance",attendanceEntity);
-			
+			model.addAttribute("attendance", attendanceEntity);
+
 			return "Student/attendance";
 		}
 
@@ -269,13 +266,13 @@ public class CertificateController {
 		if (student != null) {
 			// Fetch certificates using studentId
 			List<TCEntity> certificates = tcRepository.findByStudentId(student.getAdmissionId());
-			List<BonafideEntity> bonafideEntities=bonafideRepository.findByStudentId(student.getAdmissionId());
-			List<AttendanceEntity> attendanceEntities=attendanceEntityRepo.findByStudentId(student.getAdmissionId());
-			
+			List<BonafideEntity> bonafideEntities = bonafideRepository.findByStudentId(student.getAdmissionId());
+			List<AttendanceEntity> attendanceEntities = attendanceEntityRepo.findByStudentId(student.getAdmissionId());
+
 			// Add certificates to the model
 			model.addAttribute("tcEntities", certificates);
-			model.addAttribute("bonafides",bonafideEntities);
-			model.addAttribute("attendances",attendanceEntities);
+			model.addAttribute("bonafides", bonafideEntities);
+			model.addAttribute("attendances", attendanceEntities);
 		} else {
 			return "redirect:/";
 		}
