@@ -279,4 +279,66 @@ public class CertificateController {
 		return "Student/certificate_status";
 	}
 
+	@Autowired
+	private com.erp.service.CertificateService certificateService;
+
+	/**
+	 * Download Bonafide certificate as PDF.
+	 */
+	@GetMapping("/bonafide/download")
+	public org.springframework.http.ResponseEntity<byte[]> downloadBonafideCertificate(
+			@RequestParam("id") Long id,
+			HttpSession session) {
+
+		// Check if student is logged in
+		Admission student = (Admission) session.getAttribute("student");
+		if (student == null) {
+			return org.springframework.http.ResponseEntity.status(
+					org.springframework.http.HttpStatus.UNAUTHORIZED).build();
+		}
+
+		// Find the bonafide certificate
+		Optional<BonafideEntity> bonafideOpt = bonafideRepository.findById(id);
+
+		if (bonafideOpt.isEmpty()) {
+			return org.springframework.http.ResponseEntity.notFound().build();
+		}
+
+		BonafideEntity bonafide = bonafideOpt.get();
+
+		// Verify the certificate belongs to this student
+		if (!bonafide.getStudentId().equals(student.getAdmissionId())) {
+			return org.springframework.http.ResponseEntity.status(
+					org.springframework.http.HttpStatus.FORBIDDEN).build();
+		}
+
+		// Check if the certificate is approved (adminApproval = 1)
+		if (bonafide.getAdminApproval() != 1) {
+			return org.springframework.http.ResponseEntity.status(
+					org.springframework.http.HttpStatus.BAD_REQUEST)
+					.body("Certificate not yet approved".getBytes());
+		}
+
+		try {
+			// Generate PDF
+			byte[] pdfContent = certificateService.generateBonafideCertificate(bonafide);
+
+			// Set response headers
+			org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+			headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+			headers.setContentDispositionFormData("attachment",
+					"bonafide_certificate_" + bonafide.getStudentId() + ".pdf");
+			headers.setContentLength(pdfContent.length);
+
+			return new org.springframework.http.ResponseEntity<>(pdfContent, headers,
+					org.springframework.http.HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return org.springframework.http.ResponseEntity.status(
+					org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(("Error generating certificate: " + e.getMessage()).getBytes());
+		}
+	}
+
 }
