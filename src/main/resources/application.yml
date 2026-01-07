@@ -3,7 +3,7 @@ spring:
     name: ERP
   
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/erp
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/erp}
     username: ${DB_USERNAME:admin}
     password: ${DB_PASSWORD:admin}
     driver-class-name: com.mysql.cj.jdbc.Driver
